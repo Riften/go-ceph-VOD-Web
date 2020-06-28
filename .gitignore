@@ -1,0 +1,14 @@
+#根目录下的PDF文件
+/*.pdf
+
+#所有测试视频
+/testvideos/*
+
+#server
+/server/.idea/
+/server/go.sum
+
+#GOPATH
+/GOPATH/
+
+/.idea/
