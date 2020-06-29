@@ -9,18 +9,28 @@ Note that cephadm is running in docker.
 - go-ceph 实现与ceph交互
 
 [GOlang 实现MP4视频文件服务器](https://blog.csdn.net/wangshubo1989/article/details/78053856)
+[用Golang搭建网站](https://studygolang.com/articles/20362?fr=sidebar)
 
 
-<!--
-## 跑通ceph-video-web
-### build vue
-在vue-front目录
+## ceph 部署
+修改hosts文件为
+```bash
+192.168.92.128 admin
+192.168.92.129 node0
+192.168.92.130 node1
 ```
-yarn config set registry https://registry.npm.taobao.org
-yarn install
+同时需要保证每个机器的hostname与这里设置的一致，例如在node0可以通过执行
+```bash
+hostnamectl set-hostname node0
+```
+做到这一点
+
+将admin key发送到所有节点之后，需要对key文件添加权限才能正常使用
+```bash
+sudo chmod +r /etc/ceph/ceph.client.admin.keyring
 ```
 
-<b>Current existing ChromeDriver binary is unavailable</b>解决方法 <!--code>npm install chromedriver --chromedriver_cdnurl=http://cdn.npm.taobao.org/dist/chromedriver</code-->
-把命令行提示信息里的chromedriver下下来，解压后，放到项目目录下node_modules/chromedriver/li
-<!--把提示中下载的/tmp/2.46/chromedriver/chromedriver挪到node_modules/chromedriver-->
--->
+获取数据
+```bash
+rados -p <pool> <object> <file path>
+```
