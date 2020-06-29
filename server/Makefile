@@ -2,8 +2,6 @@
 .PHONY:cephweb-win
 
 cephweb:
-	#go build  -ldflags "-s -w" -o bin/shadow github.com/SJTU-OpenNetwork/hon-textile-switch
-	go build -o cephweb
+	go build -tags luminous -o cephweb
 cephweb-win:
-	CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build  -ldflags "-linkmode external -extldflags -static -s -w" -o cephweb.exe
-
+	CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -tags luminous -ldflags "-linkmode external -extldflags -static -s -w" -o cephweb.exe

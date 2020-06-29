@@ -8,8 +8,11 @@ import (
 	"strings"
 )
 
-func sendRequest() error{
+func touchCeph() error {
+	return nil
+}
 
+func sendRequest() error{
 	//testReq, err := http.NewRequest("POST", "/cmd", nil)
 	apiUrl := localhost
 	resource := "test"

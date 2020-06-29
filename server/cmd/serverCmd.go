@@ -4,6 +4,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/ceph/go-ceph/rados"
 	"main/db"
 	"main/handler"
 	"net/http"
@@ -32,11 +33,31 @@ func startWeb(repoPath string) error {
 		}
 		repoPath = pwd
 	}
+
+	// open repo and database
 	repo, err := db.OpenRepo(repoPath)
 	if err != nil {
 		fmt.Println("Error when open repo: ", err)
 		return err
 	}
+
+	// open connection to ceph
+	conn, err := rados.NewConn()
+	if err != nil {
+		fmt.Println("Error when create ceph connection: ", err)
+		return err
+	}
+	err = conn.ReadDefaultConfigFile()
+	if err != nil {
+		fmt.Println("Error when read ceph config: ", err)
+		return err
+	}
+	err = conn.Connect()
+	if err != nil {
+		fmt.Println("Error when connect to ceph: ", err)
+		return err
+	}
+	conn.Shutdown()
 	http.Handle("/", handler.NewHttpHandler(repo))
 	fmt.Println("Start server and listen port 8080")
 	go func() {

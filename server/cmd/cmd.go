@@ -31,6 +31,13 @@ func Run() error {
 		return sendRequest()
 	}
 
+	cephCmd := appCmd.Command("ceph", "ceph related commands. " +
+		"Note that these commands are only used for test.")
+	cephTestCmd := cephCmd.Command("test", "Test whether ceph works or not.")
+	cmds[cephTestCmd.FullCommand()] = func() error {
+		return touchCeph()
+	}
+
 	cmd := kingpin.MustParse(appCmd.Parse(os.Args[1:]))
 	for key, value := range cmds {
 		if key == cmd {
