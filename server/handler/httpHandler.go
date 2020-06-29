@@ -49,7 +49,7 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	case "/index.html":
 		// rend main page
-	case "cephtest":
+	case "/cephtest":
 		// open a pool handle
 		ioctx, err := h.conn.OpenIOContext("mytest")
 		if err != nil {
