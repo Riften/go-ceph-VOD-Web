@@ -9,19 +9,22 @@ import (
 )
 
 func touchCeph() error {
-	return nil
+	return sendRequest("cephtest", nil)
 }
 
-func sendRequest() error{
+func sendRequest(path string, values map[string]string) error{
 	//testReq, err := http.NewRequest("POST", "/cmd", nil)
 	apiUrl := localhost
-	resource := "test"
+	//resource := "test"
 	data := url.Values{}
-	data.Set("name", "xiaohua")
-	data.Set("id", "654321")
+	if values != nil {
+		for k, v := range values {
+			data.Set(k, v)
+		}
+	}
 
 	u, _ := url.ParseRequestURI(apiUrl)
-	u.Path = resource
+	u.Path = path
 
 	urlStr := u.String()
 
@@ -34,7 +37,8 @@ func sendRequest() error{
 		fmt.Println(err.Error())
 		return err
 	}
+
 	defer resp.Body.Close()
-	fmt.Println("[client.Do] request2 sent successfully.")
+
 	return nil
 }

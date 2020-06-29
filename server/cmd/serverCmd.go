@@ -57,8 +57,8 @@ func startWeb(repoPath string) error {
 		fmt.Println("Error when connect to ceph: ", err)
 		return err
 	}
-	conn.Shutdown()
-	http.Handle("/", handler.NewHttpHandler(repo))
+	defer conn.Shutdown()
+	http.Handle("/", handler.NewHttpHandler(repo, conn))
 	fmt.Println("Start server and listen port 8080")
 	go func() {
 		err := http.ListenAndServe(":8080", nil)

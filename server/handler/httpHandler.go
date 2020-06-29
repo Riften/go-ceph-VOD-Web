@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/ceph/go-ceph/rados"
 	"io"
 	"main/db"
 	"net/http"
@@ -13,10 +15,11 @@ import (
 type HttpHandler struct {
 	//repoPath string
 	repo *db.Repo
+	conn *rados.Conn
 }
 
-func NewHttpHandler(repo *db.Repo) *HttpHandler{
-	return &HttpHandler{repo: repo}
+func NewHttpHandler(repo *db.Repo, conn *rados.Conn) *HttpHandler{
+	return &HttpHandler{repo: repo, conn: conn}
 }
 
 func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -46,6 +49,30 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	case "/index.html":
 		// rend main page
+	case "cephtest":
+		// open a pool handle
+		ioctx, err := h.conn.OpenIOContext("mytest")
+		if err != nil {
+			fmt.Println("Error when open ceph pool mytest: ", err)
+			return
+		}
+		// write some data
+		bytesIn := []byte("input data")
+
+		fmt.Println("Try to write to ceph pool mytest.")
+		err = ioctx.Write("obj", bytesIn, 0)
+
+		// read the data back out
+		bytesOut := make([]byte, len(bytesIn))
+		_, err = ioctx.Read("obj", bytesOut, 0)
+		if err != nil {
+			fmt.Println("Error when read obj from ceph pool mytest: ", err)
+			return
+		}
+		if !bytes.Equal(bytesIn, bytesOut) {
+			fmt.Println("Output is not input!")
+		}
+		fmt.Println("Ceph works fine.")
 	}
 	//for k, v := range r.PostForm {
 	//	//r.Body
