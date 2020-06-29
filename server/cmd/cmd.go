@@ -28,7 +28,8 @@ func Run() error {
 
 	addVideoCmd := appCmd.Command("addVideo", "Add a video to server.")
 	cmds[addVideoCmd.FullCommand()] = func() error {
-		return sendRequest()
+		//return sendRequest()
+		return nil
 	}
 
 	cephCmd := appCmd.Command("ceph", "ceph related commands. " +
