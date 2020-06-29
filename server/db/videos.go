@@ -42,7 +42,7 @@ func (vs *VideoDB) Add(video *Video) error {
 		return err
 	}
 	//create table videos (index integer primary key not null, name text not null, blockNum integer not null, poster text, created integer not null, updated integer not null)
-	stm := `insert into videos(index, videoName, blockNum, poster, videoLength, created, updated) values(?,?,?,?,?,?,?)`
+	stm := `insert into videos(ind, videoName, blockNum, poster, videoLength, created, updated) values(?,?,?,?,?,?,?)`
 	stmt, err := tx.Prepare(stm)
 	if err != nil {
 		fmt.Printf("DB: Error in prepare: %v\n", err)
@@ -55,6 +55,7 @@ func (vs *VideoDB) Add(video *Video) error {
 		video.VideoName,
 		video.BlockNum,
 		video.Poster,
+		video.VideoLength,
 		video.Created,
 		video.Updated,
 	)

@@ -1,0 +1,10 @@
+body{
+    background-color:#000;
+    color:#FFF;
+}
+
+span.oriange-cube {
+    border-radius: 10px;
+    background: #F90;
+    color:#000;
+}

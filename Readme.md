@@ -32,5 +32,17 @@ sudo chmod +r /etc/ceph/ceph.client.admin.keyring
 
 获取数据
 ```bash
-rados -p <pool> <object> <file path>
+rados -p <存储池名称> get <对象名> <文件路径>
+```
+创建存储池
+```bash
+ceph osd pool create <存储池名称> <备份数量>
+```
+列出存储池中所有文件块
+```bash
+rados -p <存储池名称> ls
+```
+添加对象
+```bash
+rados put <对象名> <文件路径> --pool=<存储池名称>
 ```

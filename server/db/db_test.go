@@ -2,10 +2,19 @@ package db
 
 import (
 	"fmt"
+	"os"
 	"testing"
 )
 
 func TestVideoDB(t *testing.T) {
+	pwd, _ := os.Getwd()
+	t.Log(pwd)
+	_, err := os.Stat("testrepo")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	testDB, err := Create("testrepo", "")
 	if err != nil {
 		t.Error(err)

@@ -7,8 +7,12 @@
 #server
 /server/.idea/
 /server/go.sum
-/server/testrepo/*
-
+#/server/testrepo/*
+#/server/db/testrepo/*
+testrepo/
+mainnet.db
+cephweb
+cephweb.exe
 #GOPATH
 /GOPATH/
 
