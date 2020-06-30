@@ -20,6 +20,7 @@ type Video struct {
  */
 
 func (h *HttpHandler) getVideo(index int, w http.ResponseWriter) error {
+	fmt.Println("getVideo ",index)
 	vs := h.repo.DataStore.Videos.List(fmt.Sprintf("ind=%d", index))
 	if len(vs) > 0 {
 		v:= vs[0]
