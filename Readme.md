@@ -46,3 +46,8 @@ rados -p <存储池名称> ls
 ```bash
 rados put <对象名> <文件路径> --pool=<存储池名称>
 ```
+
+删除对象
+```bash
+rados -p <存储池> rm <对象名> //或者加--force-full时强制删除一个对象，不在乎对象此时状态
+```

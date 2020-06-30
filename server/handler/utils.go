@@ -25,7 +25,7 @@ func fetchFileToCeph(filePath string, conn *rados.Conn, pool string, objectName 
 	// write some data
 
 	totalBytes := 0
-	BufferSize := 1024
+	BufferSize := 1024*1024*10 //10MB
 	buffer := make([]byte, BufferSize)
 
 	for {
@@ -60,7 +60,7 @@ func fetchFileToHttp(filePath string, w http.ResponseWriter) error {
 	}
 	defer file.Close()
 	totalBytes := 0
-	BufferSize := 1024
+	BufferSize := 1024*1024*10 //10MB
 	buffer := make([]byte, BufferSize)
 
 	for {

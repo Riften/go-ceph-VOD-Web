@@ -16,7 +16,7 @@ type SQLiteDatastore struct {
 }
 
 func CreateDB(dbPath string, pin string) (*SQLiteDatastore, error) {
-	//dbPath := path.Join(dbDir, "mainnet.db")
+	fmt.Println("Openning db in ", dbPath)
 	conn, err :=sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, err

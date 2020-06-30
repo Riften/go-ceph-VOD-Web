@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"os"
+	"path"
 	"testing"
 )
 
@@ -15,7 +16,7 @@ func TestVideoDB(t *testing.T) {
 		return
 	}
 
-	testDB, err := Create("testrepo", "")
+	testDB, err := CreateDB(path.Join("testrepo", "mainnet.db"), "")
 	if err != nil {
 		t.Error(err)
 		return
@@ -25,6 +26,7 @@ func TestVideoDB(t *testing.T) {
 		t.Error(err)
 		return
 	}
+
 	err = testDB.Videos.Add(&Video{
 		Index:       0,
 		VideoName:   "test1",

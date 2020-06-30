@@ -36,7 +36,7 @@ func (v *Video) ToJson() ([]byte, error) {
 func (vs *VideoDB) GetLast() *Video {
 	vs.lock.Lock()
 	defer vs.lock.Unlock()
-	stm := `select * From table where ind = (select max(ind) from videos))`
+	stm := `select * from videos where ind = (select max(ind) from videos))`
 	videos := vs.handleQuery(stm)
 	if len(videos) > 1 {
 		fmt.Println("Error when fetch the last video in db: get more than one video.")

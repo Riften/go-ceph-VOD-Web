@@ -45,7 +45,7 @@ func InitRepo(repoPath string) (*Repo, error) {
 	if err != nil {
 		return nil, err
 	}
-	res.dbPath = path.Join(repoPath, "mainnet.db")
+
 	if fileExists(res.dbPath) {
 		return nil, errors.New("datastore already exists in "+repoPath)
 	}
@@ -61,6 +61,7 @@ func OpenRepo(repoPath string) (*Repo, error) {
 	res := &Repo{
 		repoPath: repoPath,
 	}
+	res.dbPath = path.Join(repoPath, "mainnet.db")
 	if !res.check() {
 		return nil, errors.New("invalid repo "+repoPath)
 	}
