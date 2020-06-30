@@ -39,6 +39,7 @@ func (h *HttpHandler) getVideo(index int, w http.ResponseWriter) error {
 		fmt.Println("No video with index ", index)
 		return errors.New(fmt.Sprintf("No video with index %d", index))
 	}
+	return nil
 }
 
 // Add a new video to ceph.
