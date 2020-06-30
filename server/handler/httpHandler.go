@@ -17,11 +17,12 @@ type HttpHandler struct {
 	repo *db.Repo
 	conn *rados.Conn
 	cephPool string
+	host string
 	videoLock sync.Mutex
 }
 
-func NewHttpHandler(repo *db.Repo, conn *rados.Conn) *HttpHandler{
-	return &HttpHandler{repo: repo, conn: conn, cephPool: "mytest"}
+func NewHttpHandler(repo *db.Repo, conn *rados.Conn, host string) *HttpHandler{
+	return &HttpHandler{repo: repo, conn: conn, host: host, cephPool: "mytest"}
 }
 
 func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

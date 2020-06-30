@@ -24,7 +24,7 @@ func initWeb(repoPath string) error {
 	return err
 }
 
-func startWeb(repoPath string, noCeph bool) error {
+func startWeb(repoPath string, startHost string, noCeph bool) error {
 	if repoPath == "" {
 		fmt.Println("No repoPath specified. Used current directory as repo.")
 		pwd, err := os.Getwd()
@@ -64,7 +64,7 @@ func startWeb(repoPath string, noCeph bool) error {
 	} else {
 		fmt.Println("Running without ceph.")
 	}
-	http.Handle("/", handler.NewHttpHandler(repo, conn))
+	http.Handle("/", handler.NewHttpHandler(repo, conn, startHost))
 	fmt.Println("Start server and listen port 8080")
 	go func() {
 		err := http.ListenAndServe(":8080", nil)

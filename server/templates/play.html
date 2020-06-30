@@ -6,11 +6,11 @@
         <title>index</title>
     </head>
     <body>
-    <a href="http://localhost:8080/index.html">
+    <a href="http://{{.Host}}:8080/index.html">
         <h1>大规模数据处理 <span class="oriange-cube">Project3</span></h1>
     </a>
     <video width="1120" height="540" controls="controls" id="video" preload="auto" poster="/poster?name={{.VideoPoster}}">
-        <source src="http://localhost:8080/getVideo?index={{.VideoIndex}}" type="video/mp4">
+        <source src="http://{{.Host}}:8080/getVideo?index={{.VideoIndex}}" type="video/mp4">
         换个支持video标签的浏览器去吧
     </video>
 

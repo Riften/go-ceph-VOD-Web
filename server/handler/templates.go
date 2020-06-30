@@ -15,11 +15,13 @@ type VideoInfo struct {
 }
 type VideoData struct {
 	Videos []VideoInfo
+	Host string
 }
 
 type PlayData struct {
 	VideoIndex string
 	VideoPoster string
+	Host string
 }
 
 func (h *HttpHandler) rendIndex(w http.ResponseWriter) {
@@ -30,13 +32,13 @@ func (h *HttpHandler) rendIndex(w http.ResponseWriter) {
 		return
 	}
 	vs := h.repo.DataStore.Videos.List("")
-	data := &VideoData{Videos: []VideoInfo{}}
+	data := &VideoData{Videos: []VideoInfo{}, Host:h.host}
 	for _, v := range vs {
 		info := VideoInfo{
 			PosterUrl:   "/poster?name="+v.Poster,
 			VideoLength: secondsToString(v.VideoLength),
 			VideoName:   v.VideoName,
-			VideoUrl:  fmt.Sprintf("http://localhost:8080/play.html?index=%d", v.Index),
+			VideoUrl:  fmt.Sprintf("http://%s:8080/play.html?index=%d", h.host, v.Index),
 		}
 		data.Videos = append(data.Videos, info)
 	}
@@ -61,6 +63,7 @@ func (h *HttpHandler) rendPlay(videoIndex int, w http.ResponseWriter) {
 		err = tmpl.ExecuteTemplate(w, "play", PlayData{
 			VideoIndex:  strconv.Itoa(videoIndex),
 			VideoPoster: v.Poster,
+			Host: h.host,
 		})
 	} else {
 		fmt.Println("No video with index ", videoIndex)
