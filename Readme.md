@@ -1,33 +1,96 @@
-## Install Ceph
-Use cephadm to manage ceph. Follow the installation document from [cephadm](https://docs.ceph.com/docs/master/cephadm/install/)
+## 安装
+```bash
+sudo apt-get install libcephfs-dev librbd-dev librados-dev
+make cephweb
+```
+## 运行
+```bash
+./cephweb –help
+./cephweb <command> --help
+```
+默认情况下，需要创建名为"mytest"的ceph存储池，然后在项目路径下运行
+```
+./cephweb init
+./cephweb start <ipaddress or host>
+```
+就可以启动服务器。
 
-Note that cephadm is running in docker.
-
-## 前后端交互
-使用go编写后端：
-- AJAX + gin实现前后端交互
-- go-ceph 实现与ceph交互
-
-[GOlang 实现MP4视频文件服务器](https://blog.csdn.net/wangshubo1989/article/details/78053856)
-[用Golang搭建网站](https://studygolang.com/articles/20362?fr=sidebar)
-
+运行
+```bash
+./ceph video --help
+./ceph video add --help
+```
+查看如何添加视频。
 
 ## ceph 部署
+### ceph-deploy 安装
+```bash
+wget -q -O- 'https://download.ceph.com/keys/release.asc' | sudo apt-key add -
+echo deb https://download.ceph.com/debian-{ceph-stable-release}/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list
+sudo apt update
+sudo apt install ceph-deploy
+```
+### 其他环境安装
+```bash
+sudo apt install ntpsec
+sudo apt install openssh-server
+```
+### 网络配置
 修改hosts文件为
 ```bash
 192.168.92.128 admin
 192.168.92.129 node0
 192.168.92.130 node1
 ```
+创建ceph专用用户
+```bash
+sudo useradd -d /home/{username} -m {username}
+sudo passwd {username}
+echo "{username} ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/{username}
+sudo chmod 0440 /etc/sudoers.d/{username}
+```
 同时需要保证每个机器的hostname与这里设置的一致，例如在node0可以通过执行
 ```bash
 hostnamectl set-hostname node0
+#xxxxx
 ```
-做到这一点
+配置ssh无密码访问
+```bash
+ssh-keygen
+ssh-copy-id {username}@node0
+ssh-copy-id {username}@node1
+```
+修改 ~/.ssh/config 从而指定各个节点username
+```bash
+Host node1
+   Hostname node1
+   User {username}
+Host node2
+   Hostname node2
+   User {username}
+Host node3
+   Hostname node3
+   User {username}
+```
+创建cluster目录
+```bash
+mkdir my-cluster
+cd my-cluster
+ceph-deploy new node0
+ceph-deploy install node0 node1
+ceph-deploy mon create-initial
+ceph-deploy admin node0 node1
+```
 
 将admin key发送到所有节点之后，需要对key文件添加权限才能正常使用
 ```bash
 sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+ceph-deploy mgr create node0
+ceph-deploy osd create --data /dev/adb node0
+ceph-deploy osd create --data /dev/adb node1
+ceph-deploy mon add node0
+ceph-deploy rgw create node0
+ceph-deploy rgw create node1
 ```
 
 获取数据
