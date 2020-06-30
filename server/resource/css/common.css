@@ -47,9 +47,9 @@ div.video-poster {
 div.video-length {
     width:300px;
     background-color: #555;
-    font-size : 10px;
+    font-size : 15px;
     opacity: 0.8;
     text-align:right;
     position:relative;
-    top:156px;
+    top:152px;
 }
