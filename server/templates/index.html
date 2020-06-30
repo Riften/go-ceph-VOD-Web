@@ -6,14 +6,14 @@
         <title>index</title>
     </head>
     <body>
-    <h1>大规模数据处理 <span class="oriange-cube">Project3</span></h1>
+    <h1 onclick="location='http://localhost:8080/index.html'">大规模数据处理 <span class="oriange-cube">Project3</span></h1>
     {{range .Videos}}
         <a href="{{.VideoUrl}}">
         <div class="video-box" >
             <div class="video-poster" style="background-image: url({{.PosterUrl}});">
                 <div class="video-length">{{.VideoLength}}</div>
-                {{.VideoName}}
             </div>
+            {{.VideoName}}
         </div>
         </a>
     {{end}}

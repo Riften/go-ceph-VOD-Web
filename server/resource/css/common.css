@@ -8,6 +8,10 @@ span.oriange-cube {
     background: #F90;
     color:#000;
 }
+
+a{
+    color: #F90;
+}
 footer{
     position:fixed;
     bottom:0;
