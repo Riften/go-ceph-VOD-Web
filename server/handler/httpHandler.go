@@ -77,7 +77,7 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Output is not input!")
 		}
 		fmt.Println("Ceph works fine.")
-	case "addVideo":
+	case "/addVideo":
 		videoPath, ok1 := values["videoPath"]
 		posterPath, ok2 := values["posterPath"]
 		videoName, ok3 := values["videoName"]
@@ -97,6 +97,8 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error when add video: ", err)
 			return
 		}
+	default:
+		fmt.Println("Unsupporter url path ", r.URL.Path)
 	}
 
 }
