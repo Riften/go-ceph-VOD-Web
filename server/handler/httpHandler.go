@@ -129,7 +129,7 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Done common.css")
 	case "/poster":
 		fmt.Println("Fetching poster")
-		name, ok := values["name"]
+		name, ok := r.URL.Query()["name"]
 		if !ok {
 			fmt.Println("No field name in poster query.")
 			return
