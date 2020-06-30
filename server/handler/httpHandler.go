@@ -27,7 +27,8 @@ func NewHttpHandler(repo *db.Repo, conn *rados.Conn) *HttpHandler{
 func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		fmt.Printf("Error when parse request: %v\n", err)
+		fmt.Println("Error when parse request: ", r.RequestURI)
+		fmt.Println(err)
 		return
 	}
 
