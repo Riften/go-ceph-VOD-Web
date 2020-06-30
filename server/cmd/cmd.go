@@ -28,12 +28,6 @@ func Run() error {
 		return startWeb(*startRepoPath, *startNoCeph)
 	}
 
-	addVideoCmd := appCmd.Command("addVideo", "Add a video to server.")
-	cmds[addVideoCmd.FullCommand()] = func() error {
-		//return sendRequest()
-		return nil
-	}
-
 	cephCmd := appCmd.Command("ceph", "ceph related commands. " +
 		"Note that these commands are only used for test.")
 	cephTestCmd := cephCmd.Command("test", "Test whether ceph works or not.")
@@ -50,6 +44,12 @@ func Run() error {
 	cmds[videoAddCmd.FullCommand()] = func() error {
 		return addVideo(*videoAddPath, *videoAddPoster, *videoAddName, *videoAddLength)
 	}
+
+	videoListCmd := videoCmd.Command("list", "List all video.")
+	cmds[videoListCmd.FullCommand()] = listVideo
+
+	videoLastCmd := videoCmd.Command("last", "Get the last video.")
+	cmds[videoLastCmd.FullCommand()] = lastVideo
 
 	cmd := kingpin.MustParse(appCmd.Parse(os.Args[1:]))
 	for key, value := range cmds {

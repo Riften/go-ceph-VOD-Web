@@ -98,6 +98,28 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		fmt.Println("Done add video.")
+	case "/listVideo":
+		fmt.Println("List all videos in db:")
+		videos := h.repo.DataStore.Videos.List("")
+		for _, v := range videos {
+			fmt.Println("\tIndex: ", v.Index)
+			fmt.Println("\t\tName: ",v.VideoName)
+			fmt.Println("\t\tLength: ",v.VideoLength)
+			fmt.Println("\t\tPoster: ", v.Poster)
+		}
+		fmt.Println("Done listVideo")
+	case "/lastVideo":
+		fmt.Println("Get the last video in db:")
+		v := h.repo.DataStore.Videos.GetLast()
+		if v!= nil {
+			fmt.Println("\tIndex: ", v.Index)
+			fmt.Println("\t\tName: ",v.VideoName)
+			fmt.Println("\t\tLength: ",v.VideoLength)
+			fmt.Println("\t\tPoster: ", v.Poster)
+		} else {
+			fmt.Println("Video db is empty.")
+		}
+		fmt.Println("Done lastVideo")
 	default:
 		fmt.Println("Unsupporter url path ", r.URL.Path)
 	}

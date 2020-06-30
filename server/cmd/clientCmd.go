@@ -12,6 +12,14 @@ func touchCeph() error {
 	return sendRequest("cephtest", nil)
 }
 
+func listVideo() error {
+	return sendRequest("listVideo", nil)
+}
+
+func lastVideo() error {
+	return sendRequest("lastVideo", nil)
+}
+
 func addVideo(videoPath string, posterPath string, videoName string, videoLength int) error {
 	req := "addVideo"
 	values := map[string]string {

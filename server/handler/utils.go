@@ -99,3 +99,16 @@ func fileExists(filePath string) bool {
 	}
 	return !fileInfo.IsDir()
 }
+
+func secondsToString(seconds int64) string {
+	var sPerMinute int64
+	var sPerHour int64
+	var hour int64
+	var minute int64
+	sPerMinute = 60
+	sPerHour = sPerMinute*60
+	hour = seconds / sPerHour
+	minute = (seconds % sPerHour) / sPerMinute
+	seconds = seconds - hour*sPerHour - minute * sPerMinute
+	return fmt.Sprintf("%02d:%02d:%02d", hour, minute, seconds)
+}
