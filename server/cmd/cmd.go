@@ -22,8 +22,10 @@ func Run() error {
 	startRepoPath := startCmd.Arg("repo","The path of repository.\n" +
 		"cephweb would use current path as repository if not specified.\n" +
 		"Note that there should be {resource, templates} directories within repository.").String()
+	startNoCeph := startCmd.Arg("noCeph", "Whether to run server without ceph. " +
+		"It would be false by default.").Bool()
 	cmds[startCmd.FullCommand()] = func() error {
-		return startWeb(*startRepoPath)
+		return startWeb(*startRepoPath, *startNoCeph)
 	}
 
 	addVideoCmd := appCmd.Command("addVideo", "Add a video to server.")

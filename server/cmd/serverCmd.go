@@ -24,7 +24,7 @@ func initWeb(repoPath string) error {
 	return err
 }
 
-func startWeb(repoPath string) error {
+func startWeb(repoPath string, noCeph bool) error {
 	if repoPath == "" {
 		fmt.Println("No repoPath specified. Used current directory as repo.")
 		pwd, err := os.Getwd()
@@ -40,24 +40,30 @@ func startWeb(repoPath string) error {
 		fmt.Println("Error when open repo: ", err)
 		return err
 	}
-
-	// open connection to ceph
-	conn, err := rados.NewConn()
-	if err != nil {
-		fmt.Println("Error when create ceph connection: ", err)
-		return err
+	var conn *rados.Conn
+	conn = nil
+	if !noCeph {
+		fmt.Println("Connecting ceph.")
+		// open connection to ceph
+		conn, err = rados.NewConn()
+		if err != nil {
+			fmt.Println("Error when create ceph connection: ", err)
+			return err
+		}
+		err = conn.ReadDefaultConfigFile()
+		if err != nil {
+			fmt.Println("Error when read ceph config: ", err)
+			return err
+		}
+		err = conn.Connect()
+		if err != nil {
+			fmt.Println("Error when connect to ceph: ", err)
+			return err
+		}
+		defer conn.Shutdown()
+	} else {
+		fmt.Println("Running without ceph.")
 	}
-	err = conn.ReadDefaultConfigFile()
-	if err != nil {
-		fmt.Println("Error when read ceph config: ", err)
-		return err
-	}
-	err = conn.Connect()
-	if err != nil {
-		fmt.Println("Error when connect to ceph: ", err)
-		return err
-	}
-	defer conn.Shutdown()
 	http.Handle("/", handler.NewHttpHandler(repo, conn))
 	fmt.Println("Start server and listen port 8080")
 	go func() {

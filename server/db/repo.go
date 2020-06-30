@@ -4,6 +4,7 @@ package db
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"os"
 	"path"
 )
@@ -25,6 +26,18 @@ type Repo struct {
 
 func (r *Repo) RepoPath() string {
 	return r.repoPath
+}
+
+func (r *Repo) TplPath() string {
+	return r.tplPath
+}
+
+func (r *Repo) FetchTemplate(fileNames []string) (*template.Template, error) {
+	filePaths := make([]string, len(fileNames))
+	for i, s := range fileNames {
+		filePaths[i] = path.Join(r.tplPath, s)
+	}
+	return template.ParseFiles(filePaths...)
 }
 
 func InitRepo(repoPath string) (*Repo, error) {
