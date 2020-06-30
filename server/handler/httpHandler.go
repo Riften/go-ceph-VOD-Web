@@ -145,6 +145,16 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		err = fetchCephToHttp(h.conn, h.cephPool, name[0], w)
 		fmt.Println("Done poster")
+	case "/getVideo":
+		fmt.Println("Fetching video source")
+		ind, ok := r.URL.Query()["index"]
+		if !ok {
+			fmt.Println("No field index in getVideo query")
+			return
+		}
+		index, _:= strconv.Atoi(ind[0])
+		err = h.getVideo(index, w)
+		fmt.Println("Done getVideo")
 	default:
 		fmt.Println("Unsupporter url path ", r.URL.Path)
 	}

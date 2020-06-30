@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"main/db"
+	"net/http"
+	"strconv"
 )
 
 /*
@@ -17,6 +19,28 @@ type Video struct {
 	Updated int64 `json:"updated"`
 }
  */
+
+func (h *HttpHandler) getVideo(index int, w http.ResponseWriter) error {
+	vs := h.repo.DataStore.Videos.List(fmt.Sprintf("ind=%d", index))
+	if len(vs) > 0 {
+		v:= vs[0]
+		if v.BlockNum <= 0 {
+			// objectName is video_index
+			objectName := fmt.Sprintf("video_%d", index)
+			err := fetchCephToHttp(h.conn, h.cephPool, objectName, w)
+			if err != nil {
+				fmt.Println("Error when fetch ceph object to http ", err)
+				return err
+			}
+		} else {
+
+		}
+	} else {
+		fmt.Println("No video with index ", index)
+		return errors.New(fmt.Sprintf("No video with index %d", index))
+	}
+}
+
 // Add a new video to ceph.
 // The whole video would be treated as a single ceph object.
 // The block id of this video would be video_Index
