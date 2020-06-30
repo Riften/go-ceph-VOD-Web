@@ -45,11 +45,14 @@ func (vs *VideoDB) GetLast() *Video {
 		return nil
 	}
 	var lastInd int
-	err = rows.Scan(&lastInd)
-	if err != nil {
-		fmt.Println("Error when scan last index: ", err)
-		return nil
+	for rows.Next() {
+		err = rows.Scan(&lastInd)
+		if err != nil {
+			fmt.Println("Error when scan last index: ", err)
+			return nil
+		}
 	}
+
 	fmt.Println("Last index: ", lastInd)
 	return nil
 	/*
