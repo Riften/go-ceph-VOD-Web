@@ -135,6 +135,7 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		err = fetchCephToHttp(h.conn, h.cephPool, name[0], w)
+		fmt.Println("Done poster")
 	default:
 		fmt.Println("Unsupporter url path ", r.URL.Path)
 	}

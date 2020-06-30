@@ -33,6 +33,7 @@ func fetchCephToHttp(conn *rados.Conn, pool string, objectName string, w http.Re
 			return err
 		}
 	}
+	return nil
 }
 
 func fetchFileToCeph(filePath string, conn *rados.Conn, pool string, objectName string) error {
