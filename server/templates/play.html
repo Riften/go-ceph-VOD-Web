@@ -1,4 +1,4 @@
-{{ define "index" }}
+{{ define "play" }}
     <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -7,19 +7,11 @@
     </head>
     <body>
     <a href="http://localhost:8080/index.html">
-    <h1>大规模数据处理 <span class="oriange-cube">Project3</span></h1>
+        <h1>大规模数据处理 <span class="oriange-cube">Project3</span></h1>
     </a>
-    {{range .Videos}}
-        <div class="video-box" >
-            <a href="{{.VideoUrl}}">
-            <div class="video-poster" style="background-image: url({{.PosterUrl}});">
-                <div class="video-length">{{.VideoLength}}</div>
-            </div>
-            </a>
-            {{.VideoName}}
-        </div>
-
-    {{end}}
+    <video src="/getVideo?index={{.VideoIndex}}" controls="controls" poster="/poster?name={{.VideoPoster}}">
+        改换浏览器了。
+    </video>
     <footer>
         黄永锡 119033910011<br />
         网站服务器端完全由 GO 语言编写，使用 Ceph 对象存储作为后端存储，并通过 go-ceph 实现服务器端对 Ceph 存储的访问。<br />

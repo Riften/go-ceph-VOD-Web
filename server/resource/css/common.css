@@ -10,8 +10,15 @@ span.oriange-cube {
 }
 
 a{
-    color: #F90;
+    color: #FFF;
 }
+a:hover{
+    color: #FFF;
+}
+a:visited{
+    color: #FFF;
+}
+
 footer{
     position:fixed;
     bottom:0;

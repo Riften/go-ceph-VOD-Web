@@ -53,6 +53,15 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/index.html":
 		// rend main page
 		h.rendIndex(w)
+	case "/play.html":
+		// rend play page
+		ind, ok := r.URL.Query()["index"]
+		if !ok {
+			fmt.Println("No field index in play query.")
+			return
+		}
+		indInt, _ := strconv.Atoi(ind[0])
+		h.rendPlay(indInt, w)
 	case "/cephtest":
 		// open a pool handle
 		ioctx, err := h.conn.OpenIOContext("mytest")
