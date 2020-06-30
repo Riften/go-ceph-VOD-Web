@@ -8,6 +8,33 @@ import (
 	"os"
 )
 
+func fetchCephToHttp(conn *rados.Conn, pool string, objectName string, w http.ResponseWriter) error {
+	ioctx, err := conn.OpenIOContext(pool)
+	if err != nil {
+		fmt.Println("Error when open ceph pool " ,pool, ": ", err)
+		return err
+	}
+	var totalReadBytes uint64
+	totalReadBytes = 0
+	bytesOut := make([]byte, 1024*1024*10) //10MB buffer
+	for {
+		bytesRead, err := ioctx.Read(objectName, bytesOut, totalReadBytes)
+		if err != nil {
+			fmt.Println("Error when read obj from ceph pool: ", err)
+			break
+		}
+		if bytesRead == 0 {
+			fmt.Println("Read end")
+			break
+		}
+		_, err = w.Write(bytesOut[:bytesRead])
+		if err != nil {
+			fmt.Println( "Error when write bytes to http: ", err)
+			return err
+		}
+	}
+}
+
 func fetchFileToCeph(filePath string, conn *rados.Conn, pool string, objectName string) error {
 	file, err := os.Open(filePath)
 	if err != nil {

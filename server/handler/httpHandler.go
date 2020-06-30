@@ -127,6 +127,14 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error when fecth common.css: ", err)
 		}
 		fmt.Println("Done common.css")
+	case "/poster":
+		fmt.Println("Fetching poster")
+		name, ok := values["name"]
+		if !ok {
+			fmt.Println("No field name in poster query.")
+			return
+		}
+		err = fetchCephToHttp(h.conn, h.cephPool, name[0], w)
 	default:
 		fmt.Println("Unsupporter url path ", r.URL.Path)
 	}
