@@ -53,3 +53,7 @@ div.video-length {
     position:relative;
     top:152px;
 }
+
+div.blank{
+    height:60px;
+}
