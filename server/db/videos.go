@@ -36,8 +36,23 @@ func (v *Video) ToJson() ([]byte, error) {
 func (vs *VideoDB) GetLast() *Video {
 	vs.lock.Lock()
 	defer vs.lock.Unlock()
-	stm := `select * from videos where ind=(select max(ind) from videos));`
+	//stm := `select * from videos where ind=(select max(ind) from videos));`
 	//stm := `select top 1 * from videos order by ind desc`
+	stm1 := `select max(ind) from videos;`
+	rows, err := vs.db.Query(stm1)
+	if err != nil {
+		fmt.Println("Error when query ", stm1, ": ", err)
+		return nil
+	}
+	var lastInd int
+	err = rows.Scan(&lastInd)
+	if err != nil {
+		fmt.Println("Error when scan last index: ", err)
+		return nil
+	}
+	fmt.Println("Last index: ", lastInd)
+	return nil
+	/*
 	videos := vs.handleQuery(stm)
 	if len(videos) > 1 {
 		fmt.Println("Error when fetch the last video in db: get more than one video.")
@@ -47,6 +62,8 @@ func (vs *VideoDB) GetLast() *Video {
 	} else {
 		return videos[0]
 	}
+
+	 */
 }
 
 func (vs *VideoDB) Add(video *Video) error {
