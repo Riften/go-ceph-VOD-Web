@@ -12,6 +12,17 @@ func touchCeph() error {
 	return sendRequest("cephtest", nil)
 }
 
+func addVideo(videoPath string, posterPath string, videoName string, videoLength int) error {
+	req := "addVideo"
+	values := map[string]string {
+		"videoPath": videoPath,
+		"posterPath" : posterPath,
+		"videoName": videoName,
+		"videoLength": fmt.Sprintf("%d", videoLength),
+	}
+	return sendRequest(req, values)
+}
+
 func sendRequest(path string, values map[string]string) error{
 	//testReq, err := http.NewRequest("POST", "/cmd", nil)
 	apiUrl := localhost

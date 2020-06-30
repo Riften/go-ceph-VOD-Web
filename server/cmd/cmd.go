@@ -41,6 +41,16 @@ func Run() error {
 		return touchCeph()
 	}
 
+	videoCmd := appCmd.Command("video", "Video related commands.")
+	videoAddCmd := videoCmd.Command("add", "Add a new video.")
+	videoAddPath := videoAddCmd.Arg("path", "Path of the video.").Required().String()
+	videoAddPoster := videoAddCmd.Arg("poster", "Poster of the video.").Required().String()
+	videoAddName := videoAddCmd.Arg("name", "Name of the video.").Required().String()
+	videoAddLength := videoAddCmd.Arg("length", "Length of the video in seconds.").Required().Int()
+	cmds[videoAddCmd.FullCommand()] = func() error {
+		return addVideo(*videoAddPath, *videoAddPoster, *videoAddName, *videoAddLength)
+	}
+
 	cmd := kingpin.MustParse(appCmd.Parse(os.Args[1:]))
 	for key, value := range cmds {
 		if key == cmd {

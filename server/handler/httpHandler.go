@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/ceph/go-ceph/rados"
-	"io"
 	"main/db"
 	"net/http"
-	"os"
 	"path"
+	"strconv"
+	"sync"
 )
 
 
@@ -16,10 +16,12 @@ type HttpHandler struct {
 	//repoPath string
 	repo *db.Repo
 	conn *rados.Conn
+	cephPool string
+	videoLock sync.Mutex
 }
 
 func NewHttpHandler(repo *db.Repo, conn *rados.Conn) *HttpHandler{
-	return &HttpHandler{repo: repo, conn: conn}
+	return &HttpHandler{repo: repo, conn: conn, cephPool: "mytest"}
 }
 
 func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +32,7 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("Get request: "+r.Method)
+	//fmt.Printf("Request: %s\n", r.RequestURI)
 	fmt.Println("\t",r.URL.Path)
 	fmt.Println("query:")
 	for k, v := range r.URL.Query() {
@@ -74,35 +77,26 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Output is not input!")
 		}
 		fmt.Println("Ceph works fine.")
-	}
-	//for k, v := range r.PostForm {
-	//	//r.Body
-	//	fmt.Println("key:", k, ", value:", v[0])
-	//}
-
-	fmt.Printf("Request: %s\n", r.RequestURI)
-	if r.RequestURI == "/getVideos" {
-		fmt.Println("Get video")
-		file, err := os.Open("test1.mp4")
-		if err != nil {
-			fmt.Println(err)
+	case "addVideo":
+		videoPath, ok1 := values["videoPath"]
+		posterPath, ok2 := values["posterPath"]
+		videoName, ok3 := values["videoName"]
+		videoLength, ok4 := values["videoLength"]
+		if !(ok1 && ok2 && ok3 && ok4) {
+			fmt.Println("Error: missing value field.")
 			return
 		}
-		defer file.Close()
-		BufferSize := 1024
-		buffer := make([]byte, BufferSize)
 
-		for {
-			bytesread, err := file.Read(buffer)
-			if err != nil {
-				if err != io.EOF {
-					fmt.Println(err)
-				}
-				break
-			}
-			fmt.Println("bytes read: ", bytesread)
-			//fmt.Println("bytestream to string: ", string(buffer[:bytesread]))
-			w.Write(buffer)
+		videoLength64, err := strconv.ParseInt(videoLength[0], 10, 64)
+		if err != nil {
+			fmt.Println("Error: fail to transfer string ", videoLength[0], " to int64")
+			return
+		}
+		err = h.addVideoCeph(videoPath[0], posterPath[0], videoName[0], videoLength64)
+		if err != nil {
+			fmt.Println("Error when add video: ", err)
+			return
 		}
 	}
+
 }
