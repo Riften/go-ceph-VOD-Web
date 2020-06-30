@@ -9,6 +9,7 @@ import (
 )
 
 func fetchCephToHttp(conn *rados.Conn, pool string, objectName string, w http.ResponseWriter) error {
+	fmt.Println("Fetch ceph object ", objectName)
 	ioctx, err := conn.OpenIOContext(pool)
 	if err != nil {
 		fmt.Println("Error when open ceph pool " ,pool, ": ", err)
@@ -16,6 +17,7 @@ func fetchCephToHttp(conn *rados.Conn, pool string, objectName string, w http.Re
 	}
 	var totalReadBytes uint64
 	totalReadBytes = 0
+	fmt.Printf("bytes read: %d\r", totalReadBytes)
 	bytesOut := make([]byte, 1024*1024*10) //10MB buffer
 	for {
 		bytesRead, err := ioctx.Read(objectName, bytesOut, totalReadBytes)
@@ -28,6 +30,7 @@ func fetchCephToHttp(conn *rados.Conn, pool string, objectName string, w http.Re
 			break
 		}
 		totalReadBytes += uint64(bytesRead)
+		fmt.Printf("bytes read: %d\r", totalReadBytes)
 		_, err = w.Write(bytesOut[:bytesRead])
 		if err != nil {
 			fmt.Println( "Error when write bytes to http: ", err)
