@@ -27,6 +27,7 @@ func fetchCephToHttp(conn *rados.Conn, pool string, objectName string, w http.Re
 			fmt.Println("Read end")
 			break
 		}
+		totalReadBytes += uint64(bytesRead)
 		_, err = w.Write(bytesOut[:bytesRead])
 		if err != nil {
 			fmt.Println( "Error when write bytes to http: ", err)
