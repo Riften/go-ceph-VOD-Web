@@ -8,11 +8,14 @@
     <body>
     <h1>大规模数据处理 <span class="oriange-cube">Project3</span></h1>
     {{range .Videos}}
-        <div class="video-box">
+        <a href="{{.VideoUrl}}">
+        <div class="video-box" >
             <div class="video-poster" style="background-image: url({{.PosterUrl}});">
                 <div class="video-length">{{.VideoLength}}</div>
+                {{.VideoName}}
             </div>
         </div>
+        </a>
     {{end}}
     <footer>
         黄永锡 119033910011<br />
