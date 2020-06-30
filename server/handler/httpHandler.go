@@ -97,6 +97,7 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error when add video: ", err)
 			return
 		}
+		fmt.Println("Done add video.")
 	default:
 		fmt.Println("Unsupporter url path ", r.URL.Path)
 	}
