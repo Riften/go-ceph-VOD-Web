@@ -120,6 +120,13 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Video db is empty.")
 		}
 		fmt.Println("Done lastVideo")
+	case "/common.css":
+		fmt.Println("Fetching common.css.")
+		err = fetchFileToHttp(path.Join(h.repo.ResPath(), "css", "common.css"), w)
+		if err != nil {
+			fmt.Println("Error when fecth common.css: ", err)
+		}
+		fmt.Println("Done common.css")
 	default:
 		fmt.Println("Unsupporter url path ", r.URL.Path)
 	}

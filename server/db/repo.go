@@ -32,6 +32,10 @@ func (r *Repo) TplPath() string {
 	return r.tplPath
 }
 
+func (r *Repo) ResPath() string {
+	return r.resPath
+}
+
 func (r *Repo) FetchTemplate(fileNames []string) (*template.Template, error) {
 	filePaths := make([]string, len(fileNames))
 	for i, s := range fileNames {
