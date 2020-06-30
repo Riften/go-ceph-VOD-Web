@@ -36,7 +36,7 @@ func (v *Video) ToJson() ([]byte, error) {
 func (vs *VideoDB) GetLast() *Video {
 	vs.lock.Lock()
 	defer vs.lock.Unlock()
-	stm := `select * from videos where ind=(select max(ind) from videos))`
+	stm := `select * from videos where ind=(select max(ind) from videos));`
 	//stm := `select top 1 * from videos order by ind desc`
 	videos := vs.handleQuery(stm)
 	if len(videos) > 1 {
