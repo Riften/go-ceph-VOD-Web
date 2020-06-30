@@ -7,14 +7,13 @@ import (
 
 func (h *HttpHandler) rendIndex(w http.ResponseWriter) {
 	fmt.Println("render index")
-	tmpl, err := h.repo.FetchTemplate([]string{"layout.html", "index.html"})
+	tmpl, err := h.repo.FetchTemplate([]string{"index.html"})
 	if err != nil {
-		fmt.Println("Error when load template layout.html: ", err)
+		fmt.Println("Error when load template index.html: ", err)
 		return
 	}
-	err = tmpl.ExecuteTemplate(w, "layout", "layout: Hello world")
+	err = tmpl.ExecuteTemplate(w, "index", "Hello world")
 	if err != nil {
-		fmt.Println("Error when execute template layout.html: ", err)
+		fmt.Println("Error when execute template index.html: ", err)
 	}
-	err = tmpl.ExecuteTemplate(w, "index", "index: Hello world")
 }
