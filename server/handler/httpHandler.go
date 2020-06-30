@@ -52,6 +52,8 @@ func (h *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println("Error when fetch resource/favicon.ico: "+err.Error())
 		}
+	case "/":
+		h.rendIndex(w)
 	case "/index.html":
 		// rend main page
 		h.rendIndex(w)
