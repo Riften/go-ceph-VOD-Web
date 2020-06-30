@@ -9,9 +9,11 @@
     <a href="http://localhost:8080/index.html">
         <h1>大规模数据处理 <span class="oriange-cube">Project3</span></h1>
     </a>
-    <video src="/getVideo?index={{.VideoIndex}}" controls="controls" poster="/poster?name={{.VideoPoster}}" width=80%>
-        该换浏览器了。
+    <video width="1120" height="540" controls="controls" id="video" preload="auto" poster="/poster?name={{.VideoPoster}}">
+        <source src="http://localhost:8080/getVideos?index={{.VideoIndex}}" type="video/mp4">
+        换个支持video标签的浏览器去吧
     </video>
+
     <div height="60px" />
     <footer>
         黄永锡 119033910011<br />
