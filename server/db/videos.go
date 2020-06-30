@@ -54,8 +54,8 @@ func (vs *VideoDB) GetLast() *Video {
 	}
 
 	fmt.Println("Last index: ", lastInd)
-	return nil
-	/*
+
+	stm := fmt.Sprintf("select * from videos where ind=%d;", lastInd)
 	videos := vs.handleQuery(stm)
 	if len(videos) > 1 {
 		fmt.Println("Error when fetch the last video in db: get more than one video.")
@@ -65,8 +65,6 @@ func (vs *VideoDB) GetLast() *Video {
 	} else {
 		return videos[0]
 	}
-
-	 */
 }
 
 func (vs *VideoDB) Add(video *Video) error {
